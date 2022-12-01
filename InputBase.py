@@ -11,6 +11,6 @@ class InputBase(metaclass=ABCMeta):
             return f.readlines()
 
     @abstractmethod
-    def read_raw_input(self):
+    def read_task_input(self):
         """ to be implemented in each test """
         pass

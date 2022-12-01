@@ -3,7 +3,7 @@ from functools import cached_property
 
 
 class Input(InputBase):
-    def read_raw_input(self):
+    def read_task_input(self):
         input_list = ",".join(self.raw_input).split(',\n,')
         items = [[int(item) for item in one_elf_items.split(',')] for one_elf_items in input_list]
         return items
@@ -15,7 +15,7 @@ class FoodItems:
 
     @cached_property
     def items(self):
-        return self.input.read_raw_input()
+        return self.input.read_task_input()
 
     @property
     def total_calories(self):

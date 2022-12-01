@@ -12,5 +12,5 @@ class InputBase(metaclass=ABCMeta):
 
     @abstractmethod
     def read_task_input(self):
-        """ to be implemented in each test """
+        """ to be implemented in each task """
         pass

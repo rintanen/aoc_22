@@ -28,5 +28,3 @@ if __name__ == '__main__':
 
     max_three = sorted(food_items.total_calories, reverse=True)[:3]
     print(f'PART 2: {sum(max_three)}')
-
-

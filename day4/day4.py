@@ -31,11 +31,9 @@ def overlaps(pair) -> bool:
 
 
 if __name__ == "__main__":
-    task_input = Input('input.txt').read_task_input()
-
     fully_contains_count = 0
     overlaps_count = 0
-    for i, pair in enumerate(task_input, start=1):
+    for pair in Input('input.txt').read_task_input():
         if fully_contains(pair):
             fully_contains_count += 1
         if overlaps(pair):

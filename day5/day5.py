@@ -1,18 +1,19 @@
 from InputBase import InputBase
 import re
+from typing import List, Tuple
 
 
 class Input(InputBase):
-    def read_task_input(self) -> tuple[list[str], list[int]]:
+    def read_task_input(self) -> Tuple[List[str], List[int]]:
         txt = "".join(self.raw_input)
         return self.stacks(txt), self.rearrangements(txt)
 
-    def rearrangements(self, txt: str) -> list[int]:
+    def rearrangements(self, txt: str) -> List[int]:
         txt = txt.split('\nmove')[1:]
         rearrangements = [re.findall(r'\d+', rearrangement) for rearrangement in txt]
         return [[int(s) for s in num_str] for num_str in rearrangements]
 
-    def stacks(self, txt: str) -> list[str]:
+    def stacks(self, txt: str) -> List[str]:
         txt = txt.split('\n\n')[0].split('\n')
         stacks = txt[:-1]
         crate_indices = range(1, len(max(stacks, key=len)), 4)
@@ -27,13 +28,13 @@ class Input(InputBase):
         return new_stacks
 
 
-def run(stacks: list[str], rearrangements: list[int], part: int) -> str:
-    for move_this, from_this, to_this in rearrangements:
+def run(stacks: List[str], rearrangements: List[int], part: int) -> str:
+    for how_many, from_this, to_this in rearrangements:
+        move_these = stacks[from_this - 1][:how_many]
         if part == 1:
-            stacks[to_this - 1] = "".join(reversed(stacks[from_this - 1][:move_this])) + stacks[to_this - 1]
-        elif part == 2:
-            stacks[to_this - 1] = stacks[from_this - 1][:move_this] + stacks[to_this - 1]
-        stacks[from_this - 1] = stacks[from_this - 1][move_this:]
+            move_these = "".join(reversed(move_these))
+        stacks[to_this - 1] = move_these + stacks[to_this - 1]
+        stacks[from_this - 1] = stacks[from_this - 1][how_many:]
     return "".join([s[0] for s in stacks])
 
 

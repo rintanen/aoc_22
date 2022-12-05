@@ -1,6 +1,7 @@
 from InputBase import InputBase
 import re
 
+
 class Input(InputBase):
     def read_task_input(self) -> tuple[list[str], list[int]]:
         txt = "".join(self.raw_input)

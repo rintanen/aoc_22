@@ -5,7 +5,7 @@ from typing import List, Tuple
 
 class Input(InputBase):
     def read_task_input(self) -> Tuple[List[str], List[int]]:
-        txt = "".join(self.raw_input)
+        txt = "".join(self.raw_input_lines)
         return self.stacks(txt), self.rearrangements(txt)
 
     def rearrangements(self, txt: str) -> List[int]:

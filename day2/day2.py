@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     score_pt1 = 0
     score_pt2 = 0
-    for item in task_input.raw_input:
+    for item in task_input.raw_input_lines:
         # PT1
         opponent_plays, i_play = item.strip().split(' ')
         score_pt1 += outcome(opponent_plays, i_play) + extra_points[i_play]

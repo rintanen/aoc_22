@@ -4,7 +4,7 @@ from functools import cached_property
 
 class Input(InputBase):
     def read_task_input(self):
-        input_list = ",".join(self.raw_input).split(',\n,')
+        input_list = ",".join(self.raw_input_lines).split(',\n,')
         items = [[int(item) for item in one_elf_items.split(',')] for one_elf_items in input_list]
         return items
 

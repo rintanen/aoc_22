@@ -7,7 +7,7 @@ PRIORITY_TABLE.update(dict(zip(string.ascii_uppercase, range(27, 53))))
 
 class Input(InputBase):
     def read_task_input(self) -> list:
-        stripped = [s.strip() for s in self.raw_input]
+        stripped = [s.strip() for s in self.raw_input_lines]
         return [(s[:int(len(s) / 2)], s[int(len(s) / 2):]) for s in stripped]
 
 

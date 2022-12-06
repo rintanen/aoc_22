@@ -5,7 +5,7 @@ from typing import List
 class Input(InputBase):
     def read_task_input(self) -> list:
         task_input: List[List] = []
-        for pair in self.raw_input:
+        for pair in self.raw_input_lines:
             first, second = pair.strip().split(',')
             first = first.split('-')
             second = second.split('-')

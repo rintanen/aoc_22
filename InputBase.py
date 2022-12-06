@@ -8,6 +8,11 @@ class InputBase(metaclass=ABCMeta):
     @cached_property
     def raw_input(self):
         with open(self.input_path, 'r') as f:
+            return f.read()
+
+    @cached_property
+    def raw_input_lines(self):
+        with open(self.input_path, 'r') as f:
             return f.readlines()
 
     @abstractmethod

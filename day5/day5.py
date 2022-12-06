@@ -33,7 +33,7 @@ def run(stacks: List[str], rearrangements: List[int], part: int) -> str:
         move_these = stacks[from_this - 1][:how_many]
         if part == 1:
             move_these = "".join(reversed(move_these))
-        stacks[to_this - 1] = move_these + stacks[to_this - 1]
+        stacks[to_this - 1] += move_these + stacks[to_this - 1]
         stacks[from_this - 1] = stacks[from_this - 1][how_many:]
     return "".join([s[0] for s in stacks])
 

@@ -111,7 +111,8 @@ int main()
     }
     std::cout << "PART 1: " << points << std::endl;
     std::cout << "PART 2 " << points_pt2 << std::endl;
-
+    
+    raw_input.close();
 
     return 0;
 }

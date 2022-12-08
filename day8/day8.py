@@ -9,43 +9,52 @@ class Input(InputBase):
         return np.array([[int(n) for n in row] for row in self.raw_input.split('\n')])
 
 
-def how_many_visible(tree, grid):
-    visible_map = np.where(np.less_equal(tree, grid) == True)[0]
+def how_many_visible(tree, trees_in_one_direction):
+    # indices of trees that taller or equal than the tree we examine
+    visible_map = np.where(np.less_equal(tree, trees_in_one_direction) == True)[0]
     if visible_map.size >= 1:
+        # return the index of first such tree (plus 1 because the first view blocking tree also counts)
         return visible_map[0] + 1
     else:
-        return len(grid)
+        # if none are taller than or equal return the number of trees in that direction
+        return len(trees_in_one_direction)
 
 
-def calc_scenic_score(grid, i, j):
-    tree = grid[i, j]
-    visible_top = how_many_visible(tree, np.flip(grid[:i, j]))
-    visible_left = how_many_visible(tree, np.flip(grid[i, :j]))
-    visible_below = how_many_visible(tree, grid[i+1:, j])
-    visible_right = how_many_visible(tree, grid[i, j+1:])
+def calc_scenic_score(forest, i, j):
+    # i: row
+    # j: column
+    tree = forest[i, j]
+    visible_top = how_many_visible(tree, np.flip(forest[:i, j]))
+    visible_left = how_many_visible(tree, np.flip(forest[i, :j]))
+    visible_below = how_many_visible(tree, forest[i + 1:, j])
+    visible_right = how_many_visible(tree, forest[i, j + 1:])
     return visible_top * visible_left * visible_below * visible_right
 
 
-def visible(grid, i, j):
-    tree = grid[i, j]
-    visible_top = np.greater(tree, grid[:i, j]).all()
-    visible_left = np.greater(tree, grid[i, :j]).all()
-    visible_below = np.greater(tree, grid[i+1:, j]).all()
-    visible_right = np.greater(tree, grid[i, j+1:]).all()
+def visible(forest, i, j):
+    # i: row
+    # j: column
+    tree = forest[i, j]
+    # True if all trees in given direction are taller than the one we examine
+    visible_top = np.greater(tree, forest[:i, j]).all()
+    visible_left = np.greater(tree, forest[i, :j]).all()
+    visible_below = np.greater(tree, forest[i + 1:, j]).all()
+    visible_right = np.greater(tree, forest[i, j + 1:]).all()
     return any([visible_top, visible_left, visible_below, visible_right])
 
 
-def calculate_visible_trees(tree_grid: List[int]) -> int:
-    rows, columns = tree_grid.shape
+def calculate_visible_trees(forest: List[int]) -> int:
+    rows, columns = forest.shape
     visible_count = 0
     highest_scenic_score = 0
+    # loop through all trees except ones on the edge of forest
     for row_ind in list(range(1, rows - 1)):
         for tree_ind in list(range(1, columns - 1)):
             # PT1
-            if visible(tree_grid, row_ind, tree_ind):
+            if visible(forest, row_ind, tree_ind):
                 visible_count += 1
             # PT2
-            scenic_score = calc_scenic_score(tree_grid, row_ind, tree_ind)
+            scenic_score = calc_scenic_score(forest, row_ind, tree_ind)
 
             if scenic_score > highest_scenic_score:
                 highest_scenic_score = scenic_score

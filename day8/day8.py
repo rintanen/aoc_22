@@ -1,6 +1,6 @@
 from InputBase import InputBase
 import numpy as np
-from typing import List
+from typing import List, Tuple
 from datetime import datetime
 
 
@@ -20,7 +20,7 @@ def how_many_visible(tree, trees_in_one_direction):
         return len(trees_in_one_direction)
 
 
-def calc_scenic_score(forest, i, j):
+def calc_scenic_score(forest: np.ndarray, i: int, j: int) -> int:
     # i: row
     # j: column
     tree = forest[i, j]
@@ -31,7 +31,7 @@ def calc_scenic_score(forest, i, j):
     return visible_top * visible_left * visible_below * visible_right
 
 
-def visible(forest, i, j):
+def visible(forest: np.ndarray, i: int, j: int) -> bool:
     # i: row
     # j: column
     tree = forest[i, j]
@@ -43,7 +43,7 @@ def visible(forest, i, j):
     return any([visible_top, visible_left, visible_below, visible_right])
 
 
-def calculate_visible_trees(forest: List[int]) -> int:
+def calculate_visible_trees(forest: List[int]) -> Tuple[int, int]:
     rows, columns = forest.shape
     visible_count = 0
     highest_scenic_score = 0

@@ -36,8 +36,7 @@ def visible(grid, i, j):
 
 
 def calculate_visible_trees(tree_grid: List[int]) -> int:
-    rows = len(tree_grid)
-    columns = len(tree_grid[0])
+    rows, columns = tree_grid.shape
     visible_count = 0
     highest_scenic_score = 0
     for row_ind in list(range(1, rows - 1)):

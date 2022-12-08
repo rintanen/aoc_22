@@ -10,14 +10,23 @@ class Input(InputBase):
 
 
 def how_many_visible(tree: int, trees_in_one_direction: np.array) -> int:
-    # indices of trees that taller or equal than the tree we examine
-    visible_map = np.where(np.less_equal(tree, trees_in_one_direction) == True)[0]
-    if visible_map.size >= 1:
-        # return the index of first such tree (plus 1 because the first view blocking tree also counts)
-        return visible_map[0] + 1
-    else:
-        # if none are taller than or equal return the number of trees in that direction
-        return len(trees_in_one_direction)
+    count_visible = 0
+    compare_against, rest = trees_in_one_direction[0], trees_in_one_direction[1:]
+    if rest.size > 0:
+        if tree > compare_against:
+            count_visible += 1
+        elif tree <= compare_against:
+            return count_visible + 1
+        return count_visible + how_many_visible(tree, rest)
+    return count_visible + 1
+
+
+def tree_visible_from_outside(tree: int, trees_in_one_direction: np.array) -> bool:
+    compare_against, rest = trees_in_one_direction[0], trees_in_one_direction[1:]
+    if rest.size > 0:
+        if tree > compare_against:
+            return tree_visible_from_outside(tree, rest)
+    return tree > compare_against
 
 
 def calc_scenic_score(forest: np.ndarray, i: int, j: int) -> int:
@@ -28,6 +37,7 @@ def calc_scenic_score(forest: np.ndarray, i: int, j: int) -> int:
     visible_left = how_many_visible(tree, np.flip(forest[i, :j]))
     visible_below = how_many_visible(tree, forest[i + 1:, j])
     visible_right = how_many_visible(tree, forest[i, j + 1:])
+
     return visible_top * visible_left * visible_below * visible_right
 
 
@@ -35,11 +45,10 @@ def visible(forest: np.ndarray, i: int, j: int) -> bool:
     # i: row
     # j: column
     tree = forest[i, j]
-    # True if all trees in given direction are taller than the one we examine
-    visible_top = np.greater(tree, forest[:i, j]).all()
-    visible_left = np.greater(tree, forest[i, :j]).all()
-    visible_below = np.greater(tree, forest[i + 1:, j]).all()
-    visible_right = np.greater(tree, forest[i, j + 1:]).all()
+    visible_top = tree_visible_from_outside(tree, forest[:i, j])
+    visible_left = tree_visible_from_outside(tree, forest[i, :j])
+    visible_below = tree_visible_from_outside(tree, forest[i + 1:, j])
+    visible_right = tree_visible_from_outside(tree, forest[i, j + 1:])
     return any([visible_top, visible_left, visible_below, visible_right])
 
 

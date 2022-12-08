@@ -1,8 +1,8 @@
 from InputBase import InputBase
 import numpy as np
 from typing import List, Tuple
-from datetime import datetime
-
+# from datetime import datetime
+import time
 
 class Input(InputBase):
     def read_task_input(self):
@@ -37,7 +37,6 @@ def calc_scenic_score(forest: np.ndarray, i: int, j: int) -> int:
     visible_left = how_many_visible(tree, np.flip(forest[i, :j]))
     visible_below = how_many_visible(tree, forest[i + 1:, j])
     visible_right = how_many_visible(tree, forest[i, j + 1:])
-
     return visible_top * visible_left * visible_below * visible_right
 
 
@@ -67,7 +66,6 @@ def calculate_visible_trees(forest: List[int]) -> Tuple[int, int]:
 
             if scenic_score > highest_scenic_score:
                 highest_scenic_score = scenic_score
-
     return visible_count + 2 * rows + 2 * columns - 4, highest_scenic_score
 
 
@@ -81,10 +79,10 @@ def test():
 
 if __name__ == '__main__':
     test()
-    start = datetime.now()
+    start = time.time()
     task_input = Input('input.txt').read_task_input()
     visible_trees, highest_scenic_score = calculate_visible_trees(task_input)
-    end = datetime.now()
+    end = time.time()
     print(f'PART 1: {visible_trees}')
     print(f'PART 2: {highest_scenic_score}')
-    print(f'time elapsed: {(end - start).microseconds // 1000}ns')
+    print(f'time elapsed: {round((end - start) * 1000)}ms')

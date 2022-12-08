@@ -1,11 +1,10 @@
 from InputBase import InputBase
 import numpy as np
 from typing import List, Tuple
-# from datetime import datetime
 import time
 
 class Input(InputBase):
-    def read_task_input(self):
+    def read_task_input(self) -> np.ndarray:
         return np.array([[int(n) for n in row] for row in self.raw_input.split('\n')])
 
 
@@ -29,29 +28,25 @@ def tree_visible_from_outside(tree: int, trees_in_one_direction: np.array) -> bo
     return tree > compare_against
 
 
-def calc_scenic_score(forest: np.ndarray, i: int, j: int) -> int:
-    # i: row
-    # j: column
-    tree = forest[i, j]
-    visible_top = how_many_visible(tree, np.flip(forest[:i, j]))
-    visible_left = how_many_visible(tree, np.flip(forest[i, :j]))
-    visible_below = how_many_visible(tree, forest[i + 1:, j])
-    visible_right = how_many_visible(tree, forest[i, j + 1:])
+def calc_scenic_score(forest: np.ndarray, row: int, col: int) -> int:
+    tree = forest[row, col]
+    visible_top = how_many_visible(tree, np.flip(forest[:row, col]))
+    visible_left = how_many_visible(tree, np.flip(forest[row, :col]))
+    visible_below = how_many_visible(tree, forest[row + 1:, col])
+    visible_right = how_many_visible(tree, forest[row, col + 1:])
     return visible_top * visible_left * visible_below * visible_right
 
 
-def visible(forest: np.ndarray, i: int, j: int) -> bool:
-    # i: row
-    # j: column
-    tree = forest[i, j]
-    visible_top = tree_visible_from_outside(tree, forest[:i, j])
-    visible_left = tree_visible_from_outside(tree, forest[i, :j])
-    visible_below = tree_visible_from_outside(tree, forest[i + 1:, j])
-    visible_right = tree_visible_from_outside(tree, forest[i, j + 1:])
+def visible(forest: np.ndarray, row: int, col: int) -> bool:
+    tree = forest[row, col]
+    visible_top = tree_visible_from_outside(tree, forest[:row, col])
+    visible_left = tree_visible_from_outside(tree, forest[row, :col])
+    visible_below = tree_visible_from_outside(tree, forest[row + 1:, col])
+    visible_right = tree_visible_from_outside(tree, forest[row, col + 1:])
     return any([visible_top, visible_left, visible_below, visible_right])
 
 
-def calculate_visible_trees(forest: List[int]) -> Tuple[int, int]:
+def main(forest: List[int]) -> Tuple[int, int]:
     rows, columns = forest.shape
     visible_count = 0
     highest_scenic_score = 0
@@ -72,7 +67,7 @@ def calculate_visible_trees(forest: List[int]) -> Tuple[int, int]:
 def test():
     test_input = '30373\n25512\n65332\n33549\n35390'
     test_input = np.array([[int(n) for n in row] for row in test_input.split('\n')])
-    n_visible_trees, highest_scenic_score = calculate_visible_trees(test_input)
+    n_visible_trees, highest_scenic_score = main(test_input)
     assert n_visible_trees == 21
     assert highest_scenic_score == 8
 
@@ -81,7 +76,7 @@ if __name__ == '__main__':
     test()
     start = time.time()
     task_input = Input('input.txt').read_task_input()
-    visible_trees, highest_scenic_score = calculate_visible_trees(task_input)
+    visible_trees, highest_scenic_score = main(task_input)
     end = time.time()
     print(f'PART 1: {visible_trees}')
     print(f'PART 2: {highest_scenic_score}')

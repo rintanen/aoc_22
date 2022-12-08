@@ -9,7 +9,7 @@ class Input(InputBase):
         return np.array([[int(n) for n in row] for row in self.raw_input.split('\n')])
 
 
-def how_many_visible(tree, trees_in_one_direction):
+def how_many_visible(tree: int, trees_in_one_direction: np.array) -> int:
     # indices of trees that taller or equal than the tree we examine
     visible_map = np.where(np.less_equal(tree, trees_in_one_direction) == True)[0]
     if visible_map.size >= 1:

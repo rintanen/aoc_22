@@ -15,7 +15,7 @@ def run_program(task_input, during_these_cycles) -> Tuple[List[int], List[str]]:
     display_row = ''
 
     def instruction_routine(n: int):
-        nonlocal cpu_cycle, register_values, display_rows, display_row
+        nonlocal cpu_cycle, x, register_values, display_rows, display_row
         for _ in range(n):
             # start of cycle -> draw pixel
             display_row += '#' if len(display_row) in [x - 1, x, x + 1] else '.'

@@ -1,6 +1,5 @@
 from InputBase import InputBase
 from typing import Tuple, List
-from time import time
 
 class Input(InputBase):
     def read_task_input(self) -> List[str]:
@@ -14,34 +13,29 @@ def run_program(task_input, during_these_cycles) -> Tuple[List[int], List[str]]:
     register_values: List[int] = []
     display_rows: List[str] = []
     display_row = ''
-    for instruction in task_input:
-        if instruction[4:]:
-            # addx instruction
-            # runs for two cpu cycles, after which instruction[4:] is added to register value
-            for _ in range(2):
-                # start of cycle -> draw pixel
-                display_row += '#' if len(display_row) in [x - 1, x, x + 1] else '.'
-                if cpu_cycle in during_these_cycles:
-                    register_values.append(x)
-                cpu_cycle += 1
-                # new cycle begins here -> if crt row is complete store it and start new one
-                if (cpu_cycle - 1) % 40 == 0:
-                    display_rows.append(display_row)
-                    display_row = ''
-            x += int(instruction[4:])
-        else:
-            # noop instruction
-            # run for one cpu cycle, register value is not changed
 
+    def instruction_routine(n: int):
+        nonlocal cpu_cycle, register_values, display_rows, display_row
+        for _ in range(n):
             # start of cycle -> draw pixel
             display_row += '#' if len(display_row) in [x - 1, x, x + 1] else '.'
             if cpu_cycle in during_these_cycles:
                 register_values.append(x)
             cpu_cycle += 1
+            # new cycle begins here -> if crt row is complete store it and start new one
             if (cpu_cycle - 1) % 40 == 0:
-                # new cycle begins here -> if crt row is complete store it and start new one
                 display_rows.append(display_row)
                 display_row = ''
+
+    for instruction in task_input:
+        if instruction[4:]:
+            # addx
+            instruction_routine(n=2)
+            x += int(instruction[4:])
+        else:
+            # noop
+            instruction_routine(n=1)
+
     return register_values, display_rows
 
 

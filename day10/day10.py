@@ -21,9 +21,10 @@ def run_program(task_input, during_these_cycles) -> Tuple[List[int], List[str]]:
             display_row += '#' if len(display_row) in [x - 1, x, x + 1] else '.'
             if cpu_cycle in during_these_cycles:
                 register_values.append(x)
+            # new cycle begins here
             cpu_cycle += 1
-            # new cycle begins here -> if crt row is complete store it and start new one
             if (cpu_cycle - 1) % 40 == 0:
+                # display row is complete store it and start new one
                 display_rows.append(display_row)
                 display_row = ''
 

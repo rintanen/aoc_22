@@ -9,45 +9,48 @@ class Input(InputBase):
 
 
 def run_program(task_input, during_these_cycles) -> Tuple[List[int], List[str]]:
-    cycle = 1
-    x = 1
-    program_states: List[int] = []
+    cpu_cycle = 1
+    x = 1  # register value
+    register_values: List[int] = []
     display_rows: List[str] = []
     display_row = ''
     for instruction in task_input:
         if instruction[4:]:
             # addx instruction
+            # runs for two cpu cycles, after which instruction[4:] is added to register value
             for _ in range(2):
                 # start of cycle -> draw pixel
                 display_row += '#' if len(display_row) in [x - 1, x, x + 1] else '.'
-                if cycle in during_these_cycles:
-                    program_states.append(x)
-                cycle += 1
+                if cpu_cycle in during_these_cycles:
+                    register_values.append(x)
+                cpu_cycle += 1
                 # new cycle begins here -> if crt row is complete store it and start new one
-                if (cycle - 1) % 40 == 0:
+                if (cpu_cycle - 1) % 40 == 0:
                     display_rows.append(display_row)
                     display_row = ''
             x += int(instruction[4:])
         else:
             # noop instruction
+            # run for one cpu cycle, register value is not changed
+
             # start of cycle -> draw pixel
             display_row += '#' if len(display_row) in [x - 1, x, x + 1] else '.'
-            if cycle in during_these_cycles:
-                program_states.append(x)
-            cycle += 1
-            if (cycle - 1) % 40 == 0:
+            if cpu_cycle in during_these_cycles:
+                register_values.append(x)
+            cpu_cycle += 1
+            if (cpu_cycle - 1) % 40 == 0:
                 # new cycle begins here -> if crt row is complete store it and start new one
                 display_rows.append(display_row)
                 display_row = ''
-    return program_states, display_rows
+    return register_values, display_rows
 
 
 if __name__ == '__main__':
     task_input = Input('input.txt').read_task_input()
     # return reg state during these cycles
     cycles = [20, 60, 100, 140, 180, 220]
-    program_states, display_rows = run_program(task_input, during_these_cycles=cycles)
-    sum_of_signal_powers = sum([x*y for x, y in zip(program_states, cycles)])
+    register_values, display_rows = run_program(task_input, during_these_cycles=cycles)
+    sum_of_signal_powers = sum([x * y for x, y in zip(register_values, cycles)])
     print(f'Part 1: {sum_of_signal_powers}')
     display_image = "\n".join(display_rows)
     print(f'Part 2:\n {display_image}')

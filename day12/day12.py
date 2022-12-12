@@ -43,7 +43,6 @@ def find_path_bfs(map, loc, dest, reverse=False):
         node = path[-1]
         if node not in explored:
             neighbours = get_neighbours(map, node, reverse)
-
             for neighbour in neighbours:
                 new_path = list(path)
                 new_path.append(neighbour)

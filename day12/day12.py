@@ -34,6 +34,7 @@ def get_neighbours(map, loc, reverse):
 
 def find_path_bfs(map, loc, dest, reverse=False):
     # https://en.wikipedia.org/wiki/Breadth-first_search
+    # https://www.geeksforgeeks.org/building-an-undirected-graph-and-finding-shortest-path-using-dictionaries-in-python/
     explored = []
     queue = [[loc]]
     if loc == dest:

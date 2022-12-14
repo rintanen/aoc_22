@@ -1,5 +1,6 @@
 from InputBase import InputBase
 import string
+from typing import List, Tuple
 import math
 
 elevation = dict(zip(string.ascii_lowercase, range(1, 27)))
@@ -32,7 +33,7 @@ def get_neighbours(map, loc, reverse):
     return keep
 
 
-def find_path_bfs(map, loc, dest, reverse=False):
+def find_path_bfs(map: List[str], loc: Tuple[int, int], dest: int, reverse: bool = False):
     # https://en.wikipedia.org/wiki/Breadth-first_search
     # https://www.geeksforgeeks.org/building-an-undirected-graph-and-finding-shortest-path-using-dictionaries-in-python/
     explored = []

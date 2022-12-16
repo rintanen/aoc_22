@@ -12,12 +12,16 @@ class Input(InputBase):
 
 def range_at_given_row(pair, row):
     sx, sy, bx, by = pair
+    # get the manhattan distance between sensor and its closes beacon
     distance = MAN_DISTANCE(sx, sy, bx, by)
     if abs(sy - row) > distance:
+        # sensor 'could' only have a beacon in a given row if the distance between the sensor and its closest beacon
+        # is bigger than the delta in y between the sensor and examined row
         return None
     else:
-        delta_y = abs(distance - abs(sy - row))
-        return (sx - delta_y, sx + delta_y)
+        # the range between where beacon cant be is the x coordinate of sensor +/- (manhattan distance - delta in y)
+        delta_x = abs(distance - abs(sy - row))
+        return (sx - delta_x, sx + delta_x)
 
 
 def merge_ranges(ranges):
@@ -35,6 +39,12 @@ def merge_ranges(ranges):
 
 
 def cols_without_beacon_by_row(sensor_beacon_pair, row):
+    """
+    If sensors closest beacon and the distance between them is known
+    we can deduce the columns (at given row) where any beacon cannot possibly be
+
+    we need to calculate and concatenate the ranges between which beacons cannot exist at given row for all sensors
+    """
     ranges = []
     for pair in sensor_beacon_pair:
         if range_at_row := range_at_given_row(pair, row):

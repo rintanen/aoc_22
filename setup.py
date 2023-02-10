@@ -6,6 +6,6 @@ with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'requirements
 
 setup(
     name='pr-aoc-2022',
-    python_requires='>=3.0',
+    python_requires='>=3.10',
     install_requires=required
 )

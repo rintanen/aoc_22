@@ -104,7 +104,7 @@ def test():
 
     max_flow = valve_shit.depth_first('AA', 0, 0, [])
 
-    assert max_flow == 1651, "\U0001F62E\U0001F62E voi vittu"
+    assert max_flow == 1651, "\U0001F62E\U0001F62E"
 
     print('Test PT1 OK')
 
